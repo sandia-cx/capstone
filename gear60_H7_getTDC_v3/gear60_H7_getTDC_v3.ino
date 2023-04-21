@@ -24,9 +24,16 @@ float loop_time_2;              // time difference between intterupts for sensor
 volatile int sensor_2_interrupt_counter;         // counts how many times the interrupt has been hit
 
 
+// ----- STOP BUTTON -----
+
+
 // ----- Driver 1 - Intake - Analog Outputs 1 & 2 -----
 
-// ----- Driver 2 - Exhaust - Analog Outputs 1 & 2 -----
+
+// ----- Driver 2 - Exhaust - Analog Outputs 3 & 4 -----
+
+
+// ----- Analog Output 5 for Start Sequence -----
 
 
 // ----- LCD Display -----
@@ -62,11 +69,11 @@ float rpm = 0;
 // -----------------------------------------------
 const int IVO = 708; // intake valve open 12 deg before TDC
 const int IVC = 210; // intake valve close 30 deg after BDC
-int intake_valve_flag = 0;
+int intake_valve_flag = 0; // 0 = closed - 1 = open
 
 const int EVO = 510; // exhaust valve open 30 deg before BDC
 const int EVC = 12; // exhaust valve close 12 deg after TDC
-int exhaust_valve_flag = 0;
+int exhaust_valve_flag = 0; // 0 = closed - 1 = open
 
 
 // -----------------------------------------------
@@ -96,7 +103,13 @@ void setup() {
   Serial.begin(9600);
 
 
+  // initialize analog output pins
+
+
   // function that sets the valves to their starting positions
+
+
+  // initialize Stop Button
 
 
   // initialize the sensor_1 pin as an input:
@@ -126,9 +139,6 @@ void setup() {
   lcd.clear(); 
   lcd.setCursor(0,0);   //Set cursor to character 2 on line 0
   lcd.print("READY");
-  delay (1000);
-  lcd.setCursor(0,1);   //Move cursor to character 2 on line 1
-  lcd.print("RPM: 0.00");
   
   
   //main function   
@@ -169,6 +179,11 @@ void main_function(){
         if (pulse_count == 58){
           Serial.print("S2 timing check: ");
           Serial.println(pulse_check);
+
+          lcd.setCursor(0,0);   //Move cursor to character 2 on line 1
+          lcd.print("Off Time:     ");
+          lcd.setCursor(10,0);   //Move cursor to character 2 on line 1
+          lcd.print(pulse_check);
         }
       }
       // Serial.println(" ");
@@ -225,8 +240,8 @@ void main_function(){
         // Serial.print(rpm, 2);
         // Serial.println(" ");
 
-        // lcd.setCursor(5,1);   //Move cursor to character 2 on line 1
-        // lcd.print("       ");
+        lcd.setCursor(0,1);   //Move cursor to character 2 on line 1
+        lcd.print("RPM:           ");
         lcd.setCursor(5,1);   //Move cursor to character 2 on line 1
         lcd.print(rpm, 2);
       }
@@ -234,7 +249,6 @@ void main_function(){
     }
   
   }
-
 
 }
 
