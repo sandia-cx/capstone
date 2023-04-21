@@ -1,2 +1,2 @@
-# Capstone
-GCU Capstone - Group 28
+# Direct Controlled Engine
+GCU Capstone Project - Group 28 - 2023
